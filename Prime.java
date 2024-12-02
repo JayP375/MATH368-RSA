@@ -12,7 +12,7 @@ public class Prime{
 
     public static BigInteger getBigNumber(){ //BigInt is needed since long is not big enough
         
-        StringBuilder numString = new StringBuilder(); //StringBuilder is needed to work with BigInt
+        StringBuilder numString = new StringBuilder(); //StringBuilder is needed to concatenate a 100 digit string to be used as a BigInt
 
         while (true) {
             int firstNumber = getNumber();
@@ -22,9 +22,18 @@ public class Prime{
             }
         }
 
-        while(numString.length() < 100){
-            numString.append(getNumber());//append random numbers 0-9 until 100 digits are reached
+        while(numString.length() < 99){
+            numString.append(getNumber());//append random numbers 0-9 to numbString until 99 digits are reached
         }
+
+        int lastNumber = getNumber();
+
+        if(lastNumber % 2 == 0){//want last number to be odd because prime numbers are always odd
+            lastNumber++;
+        }
+
+        numString.append(lastNumber);//guarantees last number is odd, meaning entire number is odd
+
 
         System.out.println("Generated 100 digit number is: " + numString.toString()); 
         return new BigInteger(numString.toString());
@@ -33,7 +42,7 @@ public class Prime{
 
     public static BigInteger getA(){ //same process as getBigNumber, just creates a 99 digit number to use as a base for testing
         
-        StringBuilder numString = new StringBuilder(); //StringBuilder is needed to work with BigInt
+        StringBuilder numString = new StringBuilder(); //StringBuilder is needed to concatenate a 99 digit string to be used as a BigInt
 
         while (true) {
             int firstNumber = getNumber();
@@ -56,8 +65,8 @@ public class Prime{
         if(primalityTest(number)){ //if the random number generated is a prime, return that number
             return number;
         } else{
-            while(!primalityTest(number)){ //otherwise increment and test repeatedly until prime is found
-                number = number.add(BigInteger.ONE); 
+            while(!primalityTest(number)){ //otherwise add 2 and test repeatedly until prime is found
+                number = number.add(BigInteger.TWO); 
             }
         }
         System.out.println(number + " is prime!");
@@ -95,7 +104,7 @@ public class Prime{
             }
 
             boolean isComposite = true;
-            for(int j = 0; j < r - 1; j++){ //if a^d mod n did not equal 1, the we square it r-1 times.
+            for(int j = 0; j < r - 1; j++){ //if a^d mod n did not equal 1, the we square it r-1 times, testing each time we sqaure r.
                 test = test.modPow(BigInteger.TWO, n);//test = test^2 mod n
                 
 
@@ -108,19 +117,19 @@ public class Prime{
             }
 
 
-            if(isComposite){
+            if(isComposite){ 
  
-                return false;
+                return false; //if after 20 interations isComposite is true, then the number is composite
             }
         }
   
-        return true;
+        return true; //if after 20 tests isComposite remains false, then the number is prime
 
     }
 
     public static void main(String[] args){
 
-        getPrime(getBigNumber());
+        getPrime(getBigNumber()); //delete if neccessary, used for testing
         
     }
 }
